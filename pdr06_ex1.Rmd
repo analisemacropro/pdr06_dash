@@ -1,0 +1,65 @@
+---
+title: "Highcharter"
+output: 
+  flexdashboard::flex_dashboard:
+    logo: "https://analisemacro.com.br/wp-content/uploads/2021/11/rlogo.png"
+    favicon: "rlogo.png"
+knit: (
+  function(inputFile, encoding) { 
+
+    rmarkdown::render( 
+      input       = inputFile, 
+      encoding    = encoding,      
+      output_file = 'index.html') 
+    
+    })
+---
+
+[R Logo](https://www.r-project.org/logo/) by The R Foundation is licensed under CC-BY-SA 4.0. Modifications to this picture include resizing.
+
+```{r setup, include=FALSE}
+library(highcharter)
+library(forecast)
+library(treemap)
+library(flexdashboard)
+```
+
+Column
+-------------------------------------
+
+### Gráfico de colunas
+
+```{r}
+x <- c(rnorm(10000), rnorm(1000, 4, 0.5))
+hchart(x) 
+```
+
+Column 
+-------------------------------------
+
+### Gráfico de linha
+
+```{r}
+airforecast <- forecast(
+  auto.arima(AirPassengers), 
+  level = 95
+  )
+hchart(airforecast)
+```
+
+### Mapa interativo
+
+```{r}
+data(GNI2014, package = "treemap")
+hcmap(
+  "custom/world-robinson-lowres", 
+  data = GNI2014,
+  value = "GNI",
+  joinBy = c("iso-a3", "iso3")
+  ) %>%
+  hc_colorAxis(
+    stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
+    type = "logarithmic"
+    ) 
+```
+
